@@ -246,6 +246,9 @@ export async function executeCommand(
         } else {
           cdpEndpoint = await resolveElectronEndpoint(cmd.site);
         }
+      } else if (process.env.OPENCLI_CDP_ENDPOINT) {
+        // Web adapters: allow direct CDP connection via OPENCLI_CDP_ENDPOINT
+        cdpEndpoint = process.env.OPENCLI_CDP_ENDPOINT;
       }
 
       const BrowserFactory = getBrowserFactory(cmd.site);

@@ -8,10 +8,12 @@ export { DEFAULT_BROWSER_COMMAND_TIMEOUT, DEFAULT_BROWSER_CONNECT_TIMEOUT };
 
 /**
  * Returns the appropriate browser factory based on site type.
- * Uses CDPBridge for registered Electron apps, otherwise BrowserBridge.
+ * Uses CDPBridge for registered Electron apps, or when OPENCLI_CDP_ENDPOINT is set.
+ * Otherwise falls back to BrowserBridge (Extension).
  */
 export function getBrowserFactory(site?: string): new () => IBrowserFactory {
   if (site && isElectronApp(site)) return CDPBridge;
+  if (process.env.OPENCLI_CDP_ENDPOINT) return CDPBridge;
   return BrowserBridge;
 }
 
